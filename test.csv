@@ -1,0 +1,7 @@
+date, customer, device, result, pin_result, cutoff_result, ocr_result
+2023-03-27, Peter, PS5, pass, pass, pass, pass
+2023-03-27, Peter, PS5, pass, pass, pass, pass
+2023-03-27, Peter, PS5, fail, fail, fail, fail
+2023-03-27, Peter, Xbox, fail, pass, pass, fail
+2023-03-27, Bambi, Xbox, fail, pass, pass, fail
+2023-03-27, Bambi, Xbox, fail, pass, fail, fail
