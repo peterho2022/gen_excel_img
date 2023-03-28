@@ -14,36 +14,38 @@ import openpyxl
 # 觀眾說要+pytz代表台北時區(晚點查)
 import time
 
-
-# print(time.strftime("%Y-%m-%d", time.localtime()))
-csv_path = "./test.csv"
-
-
+import pandas as pd
 
 def read_pasing_csv(csv_path):
-    # 計算客戶數量
+    """
+    Args:
+        csv_path (str) : CSV 路徑
+    Returns:
+        customer_cnt (int) : 特定用戶的今日數量
+    """
+    # 初始化客戶數量
     customer_cnt = 0
-    with open(csv_path, newline='') as csvfile:
-        rows = csv.reader(csvfile)
-
-        for row in rows:        
-            date = row[0]
-            # 因為CSV前面有空格將空格去掉
-            customer = row[1].replace(" ", "")
-            # 生產日期是否為今天
-            if date == time.strftime("%Y-%m-%d", time.localtime()):
-                # 客戶是否為 Peter
-                if customer == "Peter":
-                    customer_cnt = customer_cnt + 1
+    df = pd.read_csv(csv_path)
+    df = df.reset_index()
+    for index, row in df.iterrows():
+        date, customer = row["date"], row["customer"]
+        # 生產日期是否為今天
+        # if date == time.strftime("%Y-%m-%d", time.localtime()):
+        # 先固定日期
+        if date == "2023-03-27":                
+            # 客戶是否為 Peter
+            if customer == "Peter":
+                customer_cnt = customer_cnt + 1
     return customer_cnt
 
-if __name__ == "__main__":
+def main():
+    # csv 路徑
+    csv_path = "./test.csv"
     # print("總共客戶數量: ", read_pasing_csv(csv_path))
-    
     today = time.strftime("%Y-%m-%d", time.localtime())
-    customer_cnt = read_pasing_csv(csv_path)
+    customer_cnt = read_pasing_csv(csv_path=csv_path)
 
-    # 開啟
+    # 實例化物件
     workbook = openpyxl.Workbook()
 
     sheet = workbook.worksheets[0]
@@ -51,5 +53,10 @@ if __name__ == "__main__":
     sheet["A2"] = "客戶數"
     sheet['B1'] = today
     sheet['B2'] = customer_cnt
+    # 輸出路徑
+    excel_output_path = "./test.xlsx"
+    workbook.save(excel_output_path)
 
-    workbook.save('./test.xlsx')
+if __name__ == "__main__":
+    main()
+    
